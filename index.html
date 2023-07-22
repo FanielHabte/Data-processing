@@ -2,18 +2,45 @@
 
 <lan eng> </lan>
 <head>
-  <title>Form Template</title>
+  <title>Data Processing</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/main.css">
   <link rel="stylesheet" href="css/nav.css">
   <link rel="stylesheet" href="css/forms.css">
+  <style>
+    #widgets {
+      max-width: 600px;
+      margin: 5px;
+      padding: 2px;
+    }
+  
+    #widgets>div {
+      padding: 5px;
+      min-height: 80px;
+      margin-bottom: 5px;
+      border: 1px solid #ccc;
+      -moz-border-radius: 5px;
+      -webkit-border-radius: 5px;
+      border-radius: 5px;
+      position: relative;
+      /* required to place #pic to right */
+    }
+  
+  
+    div.pic img {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      max-width: 75px;
+    }
+  </style>
 </head>
 
   
 <body>
   <header>
-    <h1 class="page-header">Form Template</h1>
+    <h1 class="page-header">Data Processing</h1>
     <nav class="topnav" id="myTopnav">
       <a href="index.html" class="active">Home</a>
       <a href="#">Link</a>
@@ -24,14 +51,49 @@
 
   <main class="wrapper">
 
-    <h2 class="subheader">Shipping info</h2>
-<p> On this page, we demonstrated that we can take input of the data and output the inputted values with their respective
-key values(which here are the labels such as first name). this process makes the retrieving of the data easier and more
-efficient. Additionally, we title-cased the inputted data by using the if condition. to achieve this goal we dep[ended
-on the key and value when certain key were met we were able to select their specific value and change their fit chr of
-each word by leveraging the map method, .slice, .split, .join. To see how this page works, input the required data and hit "submit". And to get back to the intial page press "clear". </p>
+    <h2 class="subheader"> Buy our widget </h2>
+<p> On this page, we set up an environment that displays our inputted data and build a cart that displays our orders
+  individual and total prices. To make this work, we used the key to select the values of respective items in the cart.we created and attached checkbox to each item and
+
+  built a switch statement to control the flow of the case and its values. Continuing to split and manage the data and
+  cart separately, we introduced an if statement and put the data and title casing on the else statement and the
+  cart(switch)in the if statement. Finally, to output the values separately we assigned the outcome of the two
+  statements
+  two different variables and outputted our data to our page. To use this page, enter the required data and select the desired item and add it to your cart than to display the data
+  and your items on the page press submit, and as always don’t forget to hit clear to get back to the main page.</p>
     <div id="output">
     <form method="get" action="" class="main-form">
+      
+      <h3> Here are our Widget, etc.. </h3>
+
+        <div id="widgets">
+          <div>
+            <b>Widget</b><br />
+            <p>Our Widgets are spring loaded and need no batteries!</p>
+            <p>At $3.99 they're a bargain!</p>
+            <p> <label> <input type="checkbox" name="Cart" value="Widget"> Add to Cart </label></p>
+            <div class="pic"><img src="images/widget.png" /></div>
+          </div>
+          <div>
+            <b>Sprocket</b><br />
+            <p>Our Sprockets are well made and hold up to extreme pressure!</p>
+            <p>They only cost $5.99!</p>
+            <p> <label> <input type="checkbox" name="Cart" value="Sprocket"> Add to Cart </label></p>
+            <div class="pic"><img src="images/sprocket.png" /></div>
+          </div>
+          <div>
+            <b>Thingy</b><br />
+            <p>Our Thingys have many uses, and people come up with new ones all the time!</p>
+            <p>Such a deal at $1.99!</p>
+            <p> <label> <input type="checkbox" name="Cart" value="Thingy"> Add to Cart </label></p>
+            <div class="pic"><img src="images/thingy.png" /></div>
+          </div>
+        </div>
+
+      <h3> Shipping Info</h3>
+      
+      
+
       <div>
         <label for="FirstName">First Name</label> <br>
         <input type="text" name="First_Name" id=" FirstName" placeholder="First Name" required autofocus>
@@ -90,30 +152,63 @@ each word by leveraging the map method, .slice, .split, .join. To see how this p
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
 
-  if (queryString.length > 0) {// data submmited
+if (queryString.length > 0) {// data submmited
     let myOutput = `<div id= "container">`;
-    urlParams.forEach(function (value,key) {
-    key = key.split("_").join(" ");
+    let myCart = "";
+    let myTotal = 0;
+    let myShipping = ""; 
+
+  urlParams.forEach(function (value,key) {
     
-    if (key === "First Name" || key === "Last Name" || key === "City" || key === "Adress")
+    
+    if( key == "Cart") {// Cart
+        // alert(value);
+        switch(value){
 
-      {value = value.toLowerCase();
-        value = value.split(" ");
-        value = value.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
-        value = value.join(" ");
-        console.log(value);
-    }  
-      myOutput+=`<p> ${key}: ${value}</p>`;
-     });
-      myOutput += `<p><a href="index.html"> CLEAR </a></p>`;
-      myOutput += `</di>`;
-      document.querySelector("#output").innerHTML = myOutput;
+          case "Widget":
+          myCart += `Widgets:3.99<br>`
+          myTotal += 3.99;
+          break;
 
-  }
+          case "Sprocket":
+          myCart += `Sprocket:3.99<br>`
+          myTotal += 5.99;
+          break;
+
+            case "Thingy":
+          myCart += `Thingy:3.99<br>`
+          myTotal += 1.99;
+          break;
+        }
+
+      }else{// Shippping
+        key = key.split("_").join(" ");
+
+        if (key === "First Name" || key === "Last Name" || key === "City" || key ===    "Adress") {
+          value = value.toLowerCase();
+          value = value.split(" ");
+          value = value.map((word) => word.charAt(0).toUpperCase() + word.slice(1));
+          value = value.join(" ");
+          console.log(value);
+        }
+        myShipping += `<p> ${key}: ${value}</p>`;
+      }
+   }
+ );
+  myCart = `<h3> Cart Totals</h3>
+  <p> ${myCart} <p/>
+    <p> Total:$${myTotal} <p/>`;
+
+  myOutput += myCart +`<h3> Shipping Info </h3>`+ myShipping;
+  myOutput += `<p><a href="index.html"> CLEAR </a></p>`;
+  myOutput += `</di>`;
+  document.querySelector("#output").innerHTML = myOutput;
+}
+
 </script>
     <footer>
   <p><small>&copy; 2021-<span id="this-year"></span> by
-  YOUR NAME HERE, All Rights Reserved ~
+  Faniel Habte, All Rights Reserved ~
   <a id="html-checker" href="#" target="_blank">Check HTML</a> ~
   <a id="css-checker" href="#" target="_blank">Check CSS</a></small>
       
